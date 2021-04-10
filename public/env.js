@@ -12,9 +12,22 @@ const dummyProject={
 let dummyData=[dummyProject,dummyProject]
 
 
+const newProject=()=>{
+  let name = $('#name').val()
+  let title = $('#title').val()
+  let video = $('#video').val()
+  let image = $('#image').val()
+  let description = $('#description').val()
+  
+  let project={name,title,video,image,description
+  }
+  console.log(project)
+
+}
+
 
 const testButtonFunction=()=>{
-  alert('Thank you for clicking')
+  //alert('Thank you for clicking')
 }
 
 
@@ -52,8 +65,8 @@ listProjects=(projects)=>{
 }
 
 
+// INITIALIZATION 
 
-console.log('test')
 $(document).ready(function(){
   console.log('Ready')
 
@@ -67,6 +80,9 @@ $(document).ready(function(){
   $.get('/test?user_name="Fantastic User"',(result)=>{
     console.log(result)
   })
+
+  /// modal window initialize
+  $('.modal').modal();
 
 
 })
