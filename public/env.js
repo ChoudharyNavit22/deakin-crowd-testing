@@ -1,29 +1,42 @@
-// dummy data to emulate the proects rest api
-
-const dummyProject={
-  author:'alessio',
-  imageUrl:'https://getwallpapers.com/wallpaper/full/f/3/a/807159-download-funny-cats-wallpapers-1920x1200-meizu.jpg',
-  videoUrl:'https://youtu.be/SkgTxQm9DWM',
-  uniqueID:'4',
-  description:'We want to create an environemntal and dogs free farm for cats',
-  title:'CatsFarm'
+// send data to the server
+const submitProject=(project)=>{
+  $.ajax({
+    url: '/api/projects',
+    contentType: 'application/json',
+    data: JSON.stringify(project), // access in body
+    type: 'POST',
+    success: function(result) {
+        alert('Project Succesfully submitted')
+    }
+});
 }
-
-let dummyData=[dummyProject,dummyProject]
 
 
 const newProject=()=>{
   let name = $('#name').val()
   let title = $('#title').val()
-  let video = $('#video').val()
-  let image = $('#image').val()
+  let videoUrl = $('#video').val()
+  let imageUrl = $('#image').val()
   let description = $('#description').val()
   
   let project={name,title,video,image,description
   }
   console.log(project)
+  submitProject(project)
 
 }
+
+
+const requestProjects=()=>{
+  $.get('/api/projects',(projects)=>{
+    if(projects.length>0){
+      console.log(projects)
+      listProjects(projects)
+    }
+  })
+}
+
+
 
 
 const testButtonFunction=()=>{
@@ -71,7 +84,7 @@ $(document).ready(function(){
   console.log('Ready')
 
   // get data and build the ui component
-  listProjects(dummyData)
+  //listProjects(dummyData)
 
   //bind the button
   $('#testButton').click(testButtonFunction)
@@ -83,6 +96,7 @@ $(document).ready(function(){
 
   /// modal window initialize
   $('.modal').modal();
+  requestProjects()
 
 
 })
