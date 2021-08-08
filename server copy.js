@@ -1,22 +1,18 @@
 let express = require("express");
 let app = express();
-let dbConnect = require("./dbConnect");
 
-//dbConnect.dbConnect()
 //var app = require('express')();
 let http = require('http').createServer(app);
 let io = require('socket.io')(http);
-//const MongoClient = require('mongodb').MongoClient;
+const MongoClient = require('mongodb').MongoClient;
 
-// routes
-let projectsRoute = require('./routes/projects')
 
 
 
 var port = process.env.PORT || 8080;
 app.use(express.json());
 app.use(express.static(__dirname + '/public'));
-app.use('/api/projects',projectsRoute)
+
 
 
 const dummyProject={
@@ -29,6 +25,21 @@ const dummyProject={
 }
 let dummyData=[dummyProject,dummyProject]
 
+//serve projects data to the requestor 
+app.get('/api/projects',(req,res)=>{
+  console.log('projects requested')
+  
+  // get projects from database
+  getProjects(res)
+
+})
+
+app.post('/api/projects',(req,res)=>{
+  console.log('New project posted')
+  console.log('body',req.body)
+  let project=req.body;
+  insertProject(project,res)
+})
 
 
 app.get("/test", function (request, response) {
@@ -58,13 +69,13 @@ http.listen(port,()=>{
 
 /// DATABASE Connections
 //database connection 
-//const uri = "mongodb+srv://alexcloud:alexcloud@nsw-bot.nkfb6.mongodb.net/deakincrowds?retryWrites=true&w=majority";
-//const client = new MongoClient(uri, { useNewUrlParser: true,useUnifiedTopology: true });
+const uri = "mongodb+srv://alexcloud:alexcloud@nsw-bot.nkfb6.mongodb.net/deakincrowds?retryWrites=true&w=majority";
+const client = new MongoClient(uri, { useNewUrlParser: true,useUnifiedTopology: true });
 
 let projectsCollection;
 
 // this function is used to open the connection 
-/*const openConnection = (message) => {
+const openConnection = (message) => {
   client.connect((err,db) => {
   
     projectsCollection = client.db("deakinCrowds").collection("projects");
@@ -75,7 +86,7 @@ let projectsCollection;
       console.log('[error]',err)
     }
   });
-}*/
+}
 
 
 // insert project into the db
@@ -96,3 +107,4 @@ const getProjects=(res)=>{
   })
 }
 
+openConnection()
