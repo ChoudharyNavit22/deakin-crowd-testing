@@ -23,4 +23,8 @@ body {
 main {
   flex: 1 0 auto;
 }
-    
+
+.card .card-image img{
+  height: 200px;
+
+}

@@ -15,8 +15,8 @@ const submitProject=(project)=>{
 const newProject=()=>{
   let name = $('#name').val()
   let title = $('#title').val()
-  let videoUrl = $('#video').val()
-  let imageUrl = $('#image').val()
+  let video = $('#video').val()
+  let image = $('#image').val()
   let description = $('#description').val()
   
   let project={name,title,video,image,description
@@ -50,27 +50,26 @@ let socket = io();
 
 
 socket.on('number', (msg) => {
-    console.log('Random number: ' + msg);
+    //console.log('Random number: ' + msg);
 })
 
 //appensa the project row with objects of type project 
 listProjects=(projects)=>{
   projects.forEach(project => {
     console.log(project)
-    let item='<div class="card">'+
+    let item='<div class="card col l4">'+
       '<div class="card-image waves-effect waves-block waves-light">'+
-       ' <img class="activator" src="'+project.imageUrl+'">'+
+       ' <img class="activator" src="'+project.image+'">'+
       '</div>'+
       '<div class="card-content">'+
         '<span class="card-title activator grey-text text-darken-4">'+project.title+'<i class="material-icons right">more_vert</i></span>'+
-        '<p><a href="'+project.videoUrl+'">Youtube Video</a></p><p>'+project.author+'</p>'+
+        '<p><a href="'+project.video+'">Youtube Video</a></p><p>'+project.name+'</p>'+
       '</div>'+
       '<div class="card-reveal">'+
        ' <span class="card-title grey-text text-darken-4">'+project.title+'<i class="material-icons right">close</i></span>'+
         '<p>'+project.description+'</p>'+
      '</div>'+
-    '</div>'+
-    '<div class="row" id="projectsList"></div>'          
+    '</div>'          
     
     $('#listProjects').append(item)
   });

@@ -4,16 +4,14 @@ let app = express();
 //var app = require('express')();
 let http = require('http').createServer(app);
 let io = require('socket.io')(http);
-const bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient;
 
 
 
 
 var port = process.env.PORT || 8080;
-
+app.use(express.json());
 app.use(express.static(__dirname + '/public'));
-app.use(bodyParser.json());
 
 
 
@@ -41,7 +39,6 @@ app.post('/api/projects',(req,res)=>{
   console.log('body',req.body)
   let project=req.body;
   insertProject(project,res)
-
 })
 
 
@@ -70,18 +67,9 @@ http.listen(port,()=>{
 
 
 
-
-
-
-//this is only needed for Cloud foundry 
-require("cf-deployment-tracker-client").track();
-
-
-
-
 /// DATABASE Connections
 //database connection 
-const uri = "mongodb+srv://sit725:sit725@sit725.xjiqt.mongodb.net/reckoning?retryWrites=true&w=majority";
+const uri = "mongodb+srv://alexcloud:alexcloud@nsw-bot.nkfb6.mongodb.net/deakincrowds?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true,useUnifiedTopology: true });
 
 let projectsCollection;
@@ -89,9 +77,13 @@ let projectsCollection;
 // this function is used to open the connection 
 const openConnection = (message) => {
   client.connect((err,db) => {
+  
     projectsCollection = client.db("deakinCrowds").collection("projects");
+    
     if(!err){
       console.log('Database Connected')
+    }else{
+      console.log('[error]',err)
     }
   });
 }
@@ -101,7 +93,7 @@ const openConnection = (message) => {
 // takes a project entry, add date to it and pushes into the collection
 const insertProject=(project,res)=>{
   // insert into collection
-  projectsCollection.insert(project,(err,result)=>{
+  projectsCollection.insertOne(project,(err,result)=>{
     console.log('Project Inserted',result)
     res.send({result:200})
   }) 
