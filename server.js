@@ -23,6 +23,15 @@ app.get("/test", function (request, response) {
   response.end("Hello " + user_name + "!");
 });
 
+app.get('/addTwoNumbers/:firstNumber/:secondNumber', function(req,res,next){
+  var firstNumber = parseInt(req.params.firstNumber) 
+  var secondNumber = parseInt(req.params.secondNumber)
+  var result = firstNumber + secondNumber || null
+  if(result == null) {
+    res.json({result: result, statusCode: 400}).status(400)
+  }
+  else { res.json({result: result, statusCode: 200}).status(200) } 
+})
 
 //socket test
 io.on('connection', (socket) => {
