@@ -50,7 +50,8 @@ let socket = io();
 
 
 socket.on('number', (msg) => {
-    //console.log('Random number: ' + msg);
+    console.log('Random number: ' + msg);
+    $("#pageTitle").html("Deakin Crowd "+ msg)
 })
 
 //appensa the project row with objects of type project 

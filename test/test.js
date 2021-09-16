@@ -41,7 +41,7 @@ describe("Add Two Numbers", function() {
 
   describe("Add Two strings", function() {
     var url = "http://localhost:8080/addTwoNumbers/a/b";
-    it("should not returns status 200", function(done) {
+    it("should return status 200", function(done) {
         request(url, function(error, response, body) {
             expect(response.statusCode).to.equal(200);
             done()
@@ -58,6 +58,24 @@ describe("Add Two Numbers", function() {
         request(url, function(error, response, body) {
             body = JSON.parse(body)
             expect(body.result).to.be.a('null');
+            done()
+          });
+    });
+  });
+
+
+  describe("Add Two strings", function() {
+    var url = "http://localhost:8080/api/projects";
+    it("should return status 200", function(done) {
+        request(url, function(error, response, body) {
+            expect(response.statusCode).to.equal(200);
+            done()
+          });
+    });
+    it("returns the result as array", function(done) {
+        request(url, function(error, response, body) {
+            body = JSON.parse(body)
+            expect(body).to.be.a('array');
             done()
           });
     });
